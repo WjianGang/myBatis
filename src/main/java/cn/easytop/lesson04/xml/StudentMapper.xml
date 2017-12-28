@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+  接口绑定 将 接口中的方法和 对应的sql声明进行绑定
+  接口绑定的参数  可以通过索引的方式获取  索引从 0开始  
+   比如 ('s','abc')  0='sex'  1='abc'
+              param1='sex'  param2='abc'
+ -->
+<mapper namespace="cn.easytop.lesson04.xml.StudentMapper">
+  <!-- 每种返回的数据类型 都可以设置简单的别名  默认的别名 TypeAliasRegistry -->
+ 
+ <select id="queryStudent" resultType="student">
+ 	select * from student 
+ 	<where>
+ 	<if test="sname!=null">
+ 		and sname like '%${sname}%'
+ 	</if>
+ 	<if test="address!=null">
+ 		and address like '%${address}%'
+ 	</if>
+ 	</where>
+ </select>
+ 
+ <select id="querySex" resultType="student">
+ 	select * from student where 1 = 1
+ 	<choose>
+ 		<when test="sex!=null">
+ 			and sex=${sex}
+ 		</when>
+ 		<otherwise>
+ 			and sex=1
+ 		</otherwise>
+ 	</choose>
+ </select>
+ 
+ <update id="updateStudent" >
+ 	update student
+ 	<set>
+	 	<if test="sname!=null">
+	 		sname = '${sname}'
+	 	</if>
+	 	<if test="sex!=null">
+	 		sex = ${sex}
+	 	</if>
+	 	<if test="age!=null">
+	 		age = ${age}
+	 	</if>
+	 	<if test="address!=null">
+	 		address ='${address}'
+	 	</if> 	
+	 	where sid = ${sid}
+ 	</set>
+ </update>
+ 
+ 
+  <select id="queryStudentbyAnyGrade" resultType="student">
+  	select * from student
+  	<foreach item="gid" collection="gradeList" open="where gid in(" close=")" separator=",">
+  		#{gid}
+  	</foreach>
+  </select>
+  
+</mapper>

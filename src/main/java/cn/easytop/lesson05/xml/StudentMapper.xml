@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+  接口绑定 将 接口中的方法和 对应的sql声明进行绑定
+  接口绑定的参数  可以通过索引的方式获取  索引从 0开始  
+   比如 ('s','abc')  0='sex'  1='abc'
+              param1='sex'  param2='abc'
+ -->
+<mapper namespace="cn.easytop.lesson05.xml.StudentMapper">
+<!-- 当内存机制不足时候，需要进行处理,FIFO就是在内存不足时候进行处理，将最老的数据清楚，最先加入的数据最先清除
+	LRU 最近在使用次数最少的数据，会被优先进行清除
+	LFU 最近一段时间内使用最少的进行清除
+ -->
+	<cache eviction="FIFO" flushInterval="60000" size="512" readOnly="true">	
+	</cache>
+  <!-- 每种返回的数据类型 都可以设置简单的别名  默认的别名 TypeAliasRegistry -->
+<select id="queryStudentById" resultType="student">
+  select * from student where sid = #{0}
+ </select>
+</mapper>

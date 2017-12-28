@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+  接口绑定 将 接口中的方法和 对应的sql声明进行绑定
+  接口绑定的参数  可以通过索引的方式获取  索引从 0开始  
+   比如 ('s','abc')  0='sex'  1='abc'
+              param1='sex'  param2='abc'
+ -->
+<mapper namespace="cn.easytop.lesson03.resultMap.xml.GradeMapper">
+  <!-- 每种返回的数据类型 都可以设置简单的别名  默认的别名 TypeAliasRegistry -->
+ 
+  <resultMap type="grade" id="gradeMap" autoMapping="true">
+  	<id column="gid" property="gid"/>
+  </resultMap>
+  
+  
+ <!--
+ 	用于映射一对多 
+  -->
+  
+   <resultMap type="grade" id="gradeOne" autoMapping="true">
+  	<id column="gid" property="gid"/>
+  	<collection property="studentList" column="gid" javaType="arraylist"
+  	select="cn.easytop.lesson03.resultMap.xml.StudentMapper.queryStudentByGid"  autoMapping="true"
+  	>
+  		
+  	</collection>
+  </resultMap>
+   
+  <select id="queryAllGrade" resultMap="gradeMap">
+    select * from grade
+  </select>
+
+  
+  <select id="queryGradeByGid" resultMap="gradeMap">
+ 	select * from grade where gid=#{gid} 
+  </select>
+  <!--
+  	一对多的关系 
+   -->
+   
+   <select id="queryGrade" resultMap="gradeOne">
+   	  select * from grade where gid = #{gid}
+   </select>
+</mapper>
